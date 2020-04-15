@@ -1,4 +1,4 @@
-![node](https://img.shields.io/badge/node-js-blue) 
+![node](https://img.shields.io/badge/node-js-blue) ![html](https://img.shields.io/badge/html-5-yellow) 
 # Employee Template Generator  
     
 ## Description
