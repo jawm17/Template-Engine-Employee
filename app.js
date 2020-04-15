@@ -8,7 +8,9 @@ const fs = require("fs");
 const render = require("./lib/htmlRenderer");
 const employees = [];
 
+// asks questions and creates new employee
 function askQuestions(role) {
+    // default questions asked for each role
     let questions = [
         {
             type: 'input',
@@ -26,7 +28,7 @@ function askQuestions(role) {
             name: 'email'
         },
     ];
-
+    // if role = engineer, add engineer specific question
     if (role === "engineer") {
         questions.push({
             type: 'input',
@@ -34,6 +36,7 @@ function askQuestions(role) {
             name: 'github'
         })
     }
+    // if role = intern, add intern specific question
     else if (role === "intern") {
         questions.push({
             type: 'input',
@@ -41,6 +44,7 @@ function askQuestions(role) {
             name: 'school'
         })
     }
+    // if role = manager, add manager specific question
     else {
         questions.push({
             type: 'input',
@@ -48,6 +52,7 @@ function askQuestions(role) {
             name: 'office'
         })
     }
+    // ask questions and create new employee
     inquirer.prompt(questions).then(function (data) {
         switch (role) {
             case "engineer":
@@ -59,10 +64,11 @@ function askQuestions(role) {
             default:
                 employees.push(new Manager(data.name, data.id, data.email, data.office));
         }
+        // call newMemeber function to see if user wants to add another member
         newMember();
     });
 }
-
+// prompts user to see if they want to add a new member to the team
 function newMember() {
     inquirer
         .prompt([
@@ -75,6 +81,7 @@ function newMember() {
             }
         ])
         .then(function (data) {
+            // call askQuestions() if user wants to create new member otherwise call writeFile()
             switch (data.newMember) {
                 case 'Engineer':
                     askQuestions("engineer")
@@ -87,7 +94,7 @@ function newMember() {
             }
         });
 }
-
+// creates team.html file based on the generated employees
 function writeFile() {
     fs.writeFile("team.html", render(employees), function (err) {
         if (err) {
@@ -96,5 +103,5 @@ function writeFile() {
         console.log("Successfully created file.");
     });
 }
-
+// start process
 askQuestions("manager");
